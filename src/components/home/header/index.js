@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ContentWrapper from './ContentWrapper';
+import ContentWrapper from '../ContentWrapper';
 import HeaderPrimary from './HeaderPrimary';
 
 const SHeader = styled.header`

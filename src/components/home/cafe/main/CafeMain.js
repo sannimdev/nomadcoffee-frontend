@@ -43,7 +43,6 @@ const FollowButton = styled(InitializedButton)`
     }
 `;
 
-const cubicBezier = `cubic-bezier(0, 1.21, 1, 1)`;
 const Thumbnail = styled.div`
     border-radius: 5px;
     height: 250px;
@@ -51,7 +50,7 @@ const Thumbnail = styled.div`
     &:hover {
         background-size: 120%;
     }
-    transition: background-size 1s ${cubicBezier};
+    transition: background-size 1s ${(props) => props.theme.cubicBezier};
     cursor: pointer;
     user-select: none;
 `;

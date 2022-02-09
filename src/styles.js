@@ -6,24 +6,33 @@ export const palette = {
     almostWhite: '#e7e7e7',
     lightGray: 'rgb(204, 204, 204)',
     gray: '#757575',
+    red: '#ef5350',
     yellow: '#fee500',
     error: '#e65f3e',
     primary: '#09addb',
     black: '#333',
 };
 
+export const transition = {
+    cubicBezier: `cubic-bezier(0, 1.21, 1, 1)`,
+};
+
 export const lightModeTheme = {
     ...palette,
+    ...transition,
     color: '#191919',
     borderColor: '#dbdbdb',
     background: palette.white,
+    error: palette.red,
 };
 
 export const darkModeTheme = {
     ...palette,
+    ...transition,
     color: palette.almostWhite,
     borderColor: palette.gray,
     background: palette.black,
+    error: palette.yellow,
 };
 
 export const GlobalStyles = createGlobalStyle`

@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import routes from '../../../../routes';
 import ContentWrapper from '../../ContentWrapper';
 import { InitializedButton } from '../../shared';
 
@@ -65,6 +67,8 @@ const Title = styled.p`
 
 const defaultAvatar =
     'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2062&q=80';
+const defaultCafeImage =
+    'https://images.unsplash.com/photo-1532490389938-2856e3f1560a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80';
 function CafeMain({ items = [], loading }) {
     return (
         <ContentWrapper>
@@ -82,15 +86,20 @@ function CafeMain({ items = [], loading }) {
                             } = item;
                             return (
                                 <li key={id}>
-                                    <Item>
-                                        <Author>
-                                            <Avatar data-src={avatarURL || defaultAvatar} />
-                                            <span>{username}</span>
-                                            <FollowButton>팔로우</FollowButton>
-                                        </Author>
-                                        <Thumbnail data-desc="썸네일" data-src={photo?.url}></Thumbnail>
-                                        <Title>{name}</Title>
-                                    </Item>
+                                    <Link to={routes.shop.getPath(id)}>
+                                        <Item>
+                                            <Author>
+                                                <Avatar data-src={avatarURL || defaultAvatar} />
+                                                <span>{username}</span>
+                                                <FollowButton>팔로우</FollowButton>
+                                            </Author>
+                                            <Thumbnail
+                                                data-desc="썸네일"
+                                                data-src={photo?.url || defaultCafeImage}
+                                            ></Thumbnail>
+                                            <Title>{name}</Title>
+                                        </Item>
+                                    </Link>
                                 </li>
                             );
                         })}

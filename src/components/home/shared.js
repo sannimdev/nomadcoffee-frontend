@@ -16,7 +16,7 @@ export const InitializedButton = styled.button`
 
 export const Button = styled(InitializedButton)`
     height: 40px;
-    background-color: ${(props) => props.theme.primary};
+    background-color: ${(props) => props.color || props.theme.primary};
     color: ${(props) => props.theme.white};
     padding: 0 15px;
     font-size: 1.05rem;
@@ -25,7 +25,8 @@ export const Button = styled(InitializedButton)`
 
     transition: background-color 0.2s linear;
     &:hover {
-        background-color: ${(props) => darken(0.05, `${props.theme.primary}`)};
+        background-color: ${(props) =>
+            props.color ? darken(0.05, props.color) : darken(0.05, `${props.theme.primary}`)};
     }
 
     & > *:not(:first-child) {
@@ -33,13 +34,13 @@ export const Button = styled(InitializedButton)`
     }
 
     &.disabled {
-        background-color: ${(props) => darken(0.04, props.theme.lightGray)};
+        background-color: ${(props) => (props.color ? darken(0.05, props.color) : darken(0.04, props.theme.lightGray))};
     }
 `;
 
-export const IconButton = ({ icon: faIconModule, label = '', children, disabled }) => {
+export const IconButton = ({ icon: faIconModule, label = '', children, disabled, color }) => {
     return (
-        <Button disabled={disabled} className={disabled && 'disabled'}>
+        <Button disabled={disabled} className={disabled && 'disabled'} color={color}>
             <FontAwesomeIcon icon={faIconModule || faAddressCard} />
             <span>{label || children}</span>
         </Button>

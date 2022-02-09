@@ -1,10 +1,12 @@
-import { faLockOpen, faPen } from '@fortawesome/free-solid-svg-icons';
+import { useReactiveVar } from '@apollo/client';
+import { faLockOpen, faMoon, faPen, faSearch, faSun } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { darken } from 'polished';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { LogUserOut } from '../apollo';
+import { darkModeVar, LogUserOut, toggleDarkMode } from '../apollo';
 import Container from '../components/home/Container';
+import routes from '../routes';
 
 const Header = styled.header`
     width: 100%;
@@ -27,14 +29,15 @@ const HeaderPrimary = styled.div`
 `;
 
 const HeaderMenu = styled.ul`
-    use-select: none;
+    margin-left: 10px;
+    user-select: none;
     display: flex;
     flex-direction: row;
     align-items: center;
     li {
         cursor: pointer;
         &:not(:first-child) {
-            margin-left: 1rem;
+            margin-left: 10px;
         }
     }
 `;
@@ -67,7 +70,8 @@ const HeaderMenuIcon = styled.button`
 
 const ContentWrapper = styled.div`
     margin: 0 auto;
-    max-width: 1120px;
+    width: 1120px;
+    min-width: 1120px;
     display: flex;
     flex-direction: column;
 `;
@@ -119,9 +123,20 @@ const GnbMenu = styled.ul`
     }
 `;
 
-const SearchBox = styled.div``;
+const SearchBox = styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: space-around;
+    height: 40px;
+    padding: 10px;
+    border: 1px solid ${(props) => props.theme.lightGray};
+    border-radius: 5px;
+`;
 
-const SearchInput = styled.input``;
+const SearchInput = styled.input`
+    padding: 0 10px;
+    font-size: 0.89rem;
+`;
 
 const Button = styled.button`
     cursor: pointer;
@@ -151,41 +166,58 @@ const Button = styled.button`
 
 function Home() {
     const navigate = useNavigate();
-    const gnbList = ['카페', '김밥', '맛집', '핸드폰', '커뮤니티', '사오정', '헤어/뷰티'];
+    const gnbList = ['카페'];
+    const isDarkMode = useReactiveVar(darkModeVar);
     return (
         <Container>
             <Header>
                 <ContentWrapper>
                     <HeaderPrimary>
-                        <h1>Nomad Coffee</h1>
-                        <SearchBox>
-                            <SearchInput />
-                        </SearchBox>
-                        <HeaderMenu>
-                            <li>
-                                <HeaderMenuIcon onClick={() => LogUserOut(navigate)}>
-                                    <FontAwesomeIcon icon={faLockOpen} size="lg">
-                                        <span>로그아웃</span>
-                                    </FontAwesomeIcon>
-                                </HeaderMenuIcon>
-                            </li>
-                            <li>
-                                <Button>
-                                    <FontAwesomeIcon icon={faPen} size="sm">
-                                        <span onClick={() => LogUserOut(navigate)}>로그아웃</span>
-                                    </FontAwesomeIcon>
-                                    <span>매장등록</span>
-                                </Button>
-                            </li>
-                        </HeaderMenu>
+                        <h1>
+                            <Link to={routes.home}>Nomad Coffee</Link>
+                        </h1>
+                        <div style={{ display: 'flex' }}>
+                            <SearchBox>
+                                <FontAwesomeIcon icon={faSearch}>
+                                    <span onClick={() => LogUserOut(navigate)}>검색</span>
+                                </FontAwesomeIcon>
+                                <SearchInput placeholder="매장 검색" />
+                            </SearchBox>
+                            <HeaderMenu>
+                                <li>
+                                    <HeaderMenuIcon onClick={() => toggleDarkMode()}>
+                                        <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} size="lg">
+                                            <span>야간모드</span>
+                                        </FontAwesomeIcon>
+                                    </HeaderMenuIcon>
+                                </li>
+                                <li>
+                                    <HeaderMenuIcon onClick={() => LogUserOut(navigate)}>
+                                        <FontAwesomeIcon icon={faLockOpen} size="lg">
+                                            <span>로그아웃</span>
+                                        </FontAwesomeIcon>
+                                    </HeaderMenuIcon>
+                                </li>
+                                <li>
+                                    <Button>
+                                        <FontAwesomeIcon icon={faPen} size="sm">
+                                            <span onClick={() => LogUserOut(navigate)}>로그아웃</span>
+                                        </FontAwesomeIcon>
+                                        <span>매장등록</span>
+                                    </Button>
+                                </li>
+                            </HeaderMenu>
+                        </div>
                     </HeaderPrimary>
                 </ContentWrapper>
                 <Gnb>
                     <ContentWrapper>
                         <GnbMenu>
-                            <li className="active">고정</li>
+                            {/* <li className="active">고정</li> */}
                             {gnbList.map((menu, idx) => (
-                                <li key={idx}>{menu}</li>
+                                <li key={idx} className="active">
+                                    {menu}
+                                </li>
                             ))}
                         </GnbMenu>
                     </ContentWrapper>

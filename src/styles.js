@@ -6,7 +6,6 @@ export const palette = {
     almostWhite: '#e7e7e7',
     lightGray: 'rgb(204, 204, 204)',
     gray: '#757575',
-    borderColor: '#dbdbdb',
     yellow: '#fee500',
     error: '#e65f3e',
     primary: '#09addb',
@@ -16,11 +15,14 @@ export const palette = {
 export const lightModeTheme = {
     ...palette,
     color: '#191919',
+    borderColor: '#dbdbdb',
     background: palette.white,
 };
 
 export const darkModeTheme = {
     ...palette,
+    color: palette.almostWhite,
+    borderColor: palette.gray,
     background: palette.black,
 };
 
@@ -34,13 +36,15 @@ export const GlobalStyles = createGlobalStyle`
       box-sizing:border-box;
     }
     body {
-        background-color: #FAFAFA;
+        background-color: ${(props) => props.theme.background};
         font-size:14px;
         font-family:'Noto Sans KR', sans-serif !important;
         color: ${(props) => props.theme.color};
         letter-spacing: -0.34px;
+        transition: color 0.2s linear, background-color 0.5s linear, border-color 0.5s linear;
     }
     a {
+      color: ${(props) => props.theme.color};
       text-decoration: none;
     }
 `;

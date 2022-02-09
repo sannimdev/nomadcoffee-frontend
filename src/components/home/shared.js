@@ -1,7 +1,7 @@
 import { darken } from 'polished';
 import styled from 'styled-components';
 
-const Button = styled.button`
+export const Button = styled.button`
     cursor: pointer;
     height: 40px;
     background-color: ${(props) => props.theme.primary};
@@ -26,4 +26,3 @@ const Button = styled.button`
         margin-left: 10px;
     }
 `;
-export default Button;

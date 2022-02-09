@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { darken } from 'polished';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { darkModeVar, LogUserOut, toggleDarkMode } from '../../apollo';
-import Button from './Button';
+import { darkModeVar, LogUserOut, toggleDarkMode } from '../../../apollo';
+import { Button } from '../shared';
 
 const SHeaderMenu = styled.ul`
     margin-left: 10px;

@@ -1,10 +1,5 @@
-import styled from 'styled-components';
-import Container from '../components/home/Container';
-import ContentWrapper from '../components/home/ContentWrapper';
-import Header from '../components/home/Header';
-import HeaderMenu from '../components/home/HeaderMenu';
-import HeaderPrimary from '../components/home/HeaderPrimary';
-import SearchBox from '../components/home/SearchBox';
+import Container from '../components/home/header/Container';
+import Header from '../components/home/header/Header';
 
 function Home() {
     return (

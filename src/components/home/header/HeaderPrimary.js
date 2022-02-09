@@ -1,7 +1,7 @@
 // 헤더 첫째 줄
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import routes from '../../routes';
+import routes from '../../../routes';
 import HeaderMenu from './HeaderMenu';
 import SearchBox from './SearchBox';
 

@@ -5,20 +5,22 @@ export const palette = {
     white: '#fff',
     almostWhite: '#e7e7e7',
     lightGray: 'rgb(204, 204, 204)',
+    borderColor: '#dbdbdb',
     yellow: '#fee500',
     error: '#e65f3e',
-    primary: '#0095f6',
+    primary: '#09addb',
+    black: '#333',
 };
 
 export const lightModeTheme = {
     ...palette,
     color: '#191919',
-    black: '#333',
     background: palette.white,
 };
 
 export const darkModeTheme = {
     ...palette,
+    background: palette.black,
 };
 
 export const GlobalStyles = createGlobalStyle`

@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { darkModeVar, LogUserOut, toggleDarkMode } from '../../../apollo';
 import routes from '../../../routes';
-import { Button } from '../shared';
+import { Button, IconButton } from '../shared';
 
 const SHeaderMenu = styled.ul`
     margin-left: 10px;
@@ -70,12 +70,7 @@ function HeaderMenu() {
             </li>
             <li>
                 <Link to={routes.coffeeShopAdd}>
-                    <Button>
-                        <FontAwesomeIcon icon={faPen} size="sm">
-                            <span onClick={() => LogUserOut(navigate)}>로그아웃</span>
-                        </FontAwesomeIcon>
-                        <span>매장등록</span>
-                    </Button>
+                    <IconButton icon={faPen}>매장등록</IconButton>
                 </Link>
             </li>
         </SHeaderMenu>

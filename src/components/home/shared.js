@@ -1,3 +1,5 @@
+import { faAddressCard } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
@@ -30,3 +32,12 @@ export const Button = styled(InitializedButton)`
         margin-left: 10px;
     }
 `;
+
+export const IconButton = ({ icon: faIconModule, label = '', children }) => {
+    return (
+        <Button>
+            <FontAwesomeIcon icon={faIconModule || faAddressCard} />
+            <span>{label || children}</span>
+        </Button>
+    );
+};

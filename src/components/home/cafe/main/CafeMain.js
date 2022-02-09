@@ -88,7 +88,7 @@ function CafeMain({ items = [], loading }) {
                                             <span>{username}</span>
                                             <FollowButton>팔로우</FollowButton>
                                         </Author>
-                                        <Thumbnail data-desc="썸네일" data-src={photo.url}></Thumbnail>
+                                        <Thumbnail data-desc="썸네일" data-src={photo?.url}></Thumbnail>
                                         <Title>{name}</Title>
                                     </Item>
                                 </li>

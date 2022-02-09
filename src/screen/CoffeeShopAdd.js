@@ -1,34 +1,45 @@
-import { useReactiveVar } from '@apollo/client';
+import { gql, useMutation, useReactiveVar } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { gnbListVar } from '../apollo';
 import HelmetTitle from '../components/HelmetTitle';
+import CardContainer from '../components/home/cafe/add/CardContainer';
 import CardInputForms from '../components/home/cafe/add/CardInputForms';
 import ContentWrapper from '../components/home/ContentWrapper';
 import Header from '../components/home/header';
 import Container from '../components/home/header/Container';
 import { IconButton } from '../components/home/shared';
+import routes from '../routes';
 
-const CardContainer = styled.div`
-    width: 500px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-
-    h2 {
-        font-size: 2rem;
-        font-weight: 700;
+const MUTATION_CREATE_COFFEESHOP = gql`
+    mutation createCoffeeShop($name: String!, $latitude: String, $longitude: String) {
+        createCoffeeShop(name: $name, latitude: $latitude, longitude: $longitude) {
+            ok
+            error
+        }
     }
 `;
 
 function CoffeeShopAdd() {
+    const navigate = useNavigate();
     const gnbList = useReactiveVar(gnbListVar);
-    const { register, handleSubmit, watch, formState } = useForm({ mode: 'onChange' });
+    const { register, handleSubmit, watch, formState, setError, clearErrors } = useForm({ mode: 'onChange' });
     const { isValid, errors } = formState;
+    const clearError = () => clearErrors('result');
     watch();
-    const onSubmitValid = (event) => {
-        event.preventDefault();
+    const onCompleted = (data) => {
+        const {
+            createCoffeeShop: { ok, error },
+        } = data;
+        if (!ok) {
+            return setError('result', { message: error });
+        }
+        return navigate(routes.home);
+    };
+    const [createCoffeeShop, { loading, error }] = useMutation(MUTATION_CREATE_COFFEESHOP, { onCompleted });
+    const onSubmitValid = (data) => {
+        if (!loading) createCoffeeShop({ variables: { ...data, Header } });
     };
 
     return (
@@ -39,8 +50,13 @@ function CoffeeShopAdd() {
                 <CardContainer>
                     <h2>카페 등록하기</h2>
                     <form onSubmit={handleSubmit(onSubmitValid)}>
-                        <CardInputForms register={register} errors={errors} />
-                        <IconButton icon={faPlus} type="submit" disabled={!isValid}>
+                        <CardInputForms
+                            register={register}
+                            errors={errors}
+                            clearError={clearError}
+                            resultMessage={errors?.reesult?.message || error?.message}
+                        />
+                        <IconButton icon={faPlus} type="submit" disabled={!isValid || errors?.result?.message}>
                             등록하기
                         </IconButton>
                     </form>

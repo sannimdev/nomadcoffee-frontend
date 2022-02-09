@@ -21,7 +21,7 @@ const SBackground = styled.div`
     min-width: 480px;
 `;
 
-const pick = 3 || background.pick();
+const pick = background.pick();
 const Background = memo(({ children }) => {
     return <SBackground src={background.getBackground(pick)}>{children}</SBackground>;
 });

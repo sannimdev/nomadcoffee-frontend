@@ -2,9 +2,10 @@ import { useReactiveVar } from '@apollo/client';
 import { faLockOpen, faMoon, faPen, faSun } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { darken } from 'polished';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { darkModeVar, LogUserOut, toggleDarkMode } from '../../../apollo';
+import routes from '../../../routes';
 import { Button } from '../shared';
 
 const SHeaderMenu = styled.ul`
@@ -68,12 +69,14 @@ function HeaderMenu() {
                 </HeaderMenuIcon>
             </li>
             <li>
-                <Button>
-                    <FontAwesomeIcon icon={faPen} size="sm">
-                        <span onClick={() => LogUserOut(navigate)}>로그아웃</span>
-                    </FontAwesomeIcon>
-                    <span>매장등록</span>
-                </Button>
+                <Link to={routes.coffeeShopAdd}>
+                    <Button>
+                        <FontAwesomeIcon icon={faPen} size="sm">
+                            <span onClick={() => LogUserOut(navigate)}>로그아웃</span>
+                        </FontAwesomeIcon>
+                        <span>매장등록</span>
+                    </Button>
+                </Link>
             </li>
         </SHeaderMenu>
     );

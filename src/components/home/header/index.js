@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ContentWrapper from '../ContentWrapper';
 import HeaderPrimary from './HeaderPrimary';
@@ -42,7 +43,7 @@ const GnbMenu = styled.ul`
             transition: color 0.2s linear;
         }
         &.active {
-            color: ${(props) => props.theme.primary};
+            color: ${(props) => props.theme.primary} !important;
             &::after {
                 width: 100%;
                 background-color: ${(props) => props.theme.primary};
@@ -64,11 +65,12 @@ function Header({ gnbList = [] }) {
                 <ContentWrapper>
                     <GnbMenu>
                         {/* <li className="active">고정</li> */}
-                        {gnbList.map((menu, idx) => (
-                            <li key={idx} className="active">
-                                {menu}
-                            </li>
-                        ))}
+                        {gnbList &&
+                            gnbList.map(({ name, path }, idx) => (
+                                <li key={idx} className="active">
+                                    <Link to={path}>{name}</Link>
+                                </li>
+                            ))}
                     </GnbMenu>
                 </ContentWrapper>
             </Gnb>

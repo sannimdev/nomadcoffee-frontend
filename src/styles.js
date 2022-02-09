@@ -44,7 +44,7 @@ export const GlobalStyles = createGlobalStyle`
         transition: color 0.2s linear, background-color 0.5s linear, border-color 0.5s linear;
     }
     a {
-      color: ${(props) => props.theme.color};
       text-decoration: none;
+      color: inherit !important;
     }
 `;

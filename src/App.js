@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { client, darkModeVar, loggedInVar } from './apollo';
 import routes from './routes';
+import CoffeeShopAdd from './screen/CoffeeShopAdd';
 import Home from './screen/Home';
 import Login from './screen/Login';
 import SignUp from './screen/SignUp';
@@ -25,6 +26,7 @@ function App() {
                         <Routes>
                             <Route path="*" element={<h1>Not Found</h1>} />
                             <Route path={routes.home} element={isLoggedIn ? <Home /> : <Login />} />
+                            <Route path={routes.coffeeShopAdd} element={isLoggedIn ? <CoffeeShopAdd /> : <Login />} />
                             {!isLoggedIn && <Route path={routes.signUp} element={<SignUp />} />}
                         </Routes>
                     </Router>

@@ -1,4 +1,5 @@
 import { ApolloClient, InMemoryCache, makeVar } from '@apollo/client';
+import routes from './routes';
 
 const KEY_TOKEN = 'token';
 const KEY_DARK_MODE = 'dark_mode';
@@ -8,7 +9,6 @@ export const LogUserIn = (token) => {
     localStorage.setItem(KEY_TOKEN, token);
     loggedInVar(true);
 };
-
 export const LogUserOut = (navigate) => {
     localStorage.removeItem(KEY_TOKEN);
     loggedInVar(false);
@@ -16,7 +16,6 @@ export const LogUserOut = (navigate) => {
 };
 
 export const darkModeVar = makeVar(!!localStorage.getItem(KEY_DARK_MODE));
-
 export const toggleDarkMode = () => {
     const isDarkMode = !!localStorage.getItem(KEY_DARK_MODE);
     darkModeVar(!isDarkMode);
@@ -26,6 +25,14 @@ export const toggleDarkMode = () => {
         localStorage.removeItem(KEY_DARK_MODE);
     }
 };
+
+export const gnbListVar = makeVar([
+    {
+        id: 1,
+        name: '카페',
+        path: routes.home,
+    },
+]);
 
 export const client = new ApolloClient({
     uri: 'http://localhost:4000/graphql',

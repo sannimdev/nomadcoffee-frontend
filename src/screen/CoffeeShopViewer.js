@@ -20,12 +20,13 @@ const QUERY_SEE_COFFEESHOP = gql`
             name
             longitude
             latitude
+            isMine
         }
     }
 `;
 
 const ButtonContainer = styled.ul`
-    display: flex;
+    display: ${(props) => (props.isMine ? 'flex' : 'none')};
     flex-direction: row-reverse;
     & > li:not(:first-child) {
         margin-right: 10px;
@@ -40,7 +41,7 @@ function CoffeeShopViewer(props) {
     const { register, handleSubmit, watch, formState, setError, clearErrors, setValue } = useForm({
         mode: 'onChange',
     });
-    const onCompleted = () => {
+    const onCompleted = (data) => {
         const elements = ['name', 'latitude', 'longitude'];
         elements.forEach((name) => setValue(name, data?.seeCoffeeShop[name]));
     };
@@ -78,8 +79,9 @@ function CoffeeShopViewer(props) {
                             errors={errors}
                             clearError={clearError}
                             resultMessage={errors?.reesult?.message || error?.message}
+                            isMine={data?.seeCoffeeShop?.isMine}
                         />
-                        <ButtonContainer>
+                        <ButtonContainer isMine={data?.seeCoffeeShop?.isMine}>
                             <li>
                                 <IconButton
                                     icon={faTrash}

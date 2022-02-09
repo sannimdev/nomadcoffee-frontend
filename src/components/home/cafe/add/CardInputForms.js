@@ -47,7 +47,7 @@ const ResultError = styled.p`
     text-align: center;
 `;
 
-function CardInputForms({ register, errors, resultMessage, clearError }) {
+function CardInputForms({ register, errors, resultMessage, clearError, isMine }) {
     if (!register) return <div>register 객체를 넘겨야 함</div>;
     return (
         <>
@@ -60,6 +60,7 @@ function CardInputForms({ register, errors, resultMessage, clearError }) {
                             type="text"
                             placeholder="카페 이름"
                             onFocus={clearError}
+                            disabled={!isMine}
                             className={!!errors?.name?.message && 'error'}
                         />
                         <CardError message={errors?.name?.message} />
@@ -72,6 +73,7 @@ function CardInputForms({ register, errors, resultMessage, clearError }) {
                             {...register('latitude')}
                             type="text"
                             onFocus={clearError}
+                            disabled={!isMine}
                             placeholder="지금은 입력하지 않아도 됩니다"
                         />
                     </label>
@@ -83,6 +85,7 @@ function CardInputForms({ register, errors, resultMessage, clearError }) {
                             {...register('longitude')}
                             type="text"
                             onFocus={clearError}
+                            disabled={!isMine}
                             placeholder="지금은 입력하지 않아도 됩니다"
                         />
                     </label>

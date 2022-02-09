@@ -1,14 +1,14 @@
 import { useReactiveVar } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { gnbListVar } from '../apollo';
 import HelmetTitle from '../components/HelmetTitle';
-import CardInputForms from '../components/home/cafe/add/CardList';
+import CardInputForms from '../components/home/cafe/add/CardInputForms';
 import ContentWrapper from '../components/home/ContentWrapper';
 import Header from '../components/home/header';
 import Container from '../components/home/header/Container';
-import { Button, IconButton } from '../components/home/shared';
+import { IconButton } from '../components/home/shared';
 
 const CardContainer = styled.div`
     width: 500px;
@@ -24,6 +24,13 @@ const CardContainer = styled.div`
 
 function CoffeeShopAdd() {
     const gnbList = useReactiveVar(gnbListVar);
+    const { register, handleSubmit, watch, formState } = useForm({ mode: 'onChange' });
+    const { isValid, errors } = formState;
+    watch();
+    const onSubmitValid = (event) => {
+        event.preventDefault();
+    };
+
     return (
         <Container>
             <HelmetTitle title={'카페 등록하기'} />
@@ -31,9 +38,11 @@ function CoffeeShopAdd() {
             <ContentWrapper>
                 <CardContainer>
                     <h2>카페 등록하기</h2>
-                    <form>
-                        <CardInputForms />
-                        <IconButton icon={faPlus}>등록하기</IconButton>
+                    <form onSubmit={handleSubmit(onSubmitValid)}>
+                        <CardInputForms register={register} errors={errors} />
+                        <IconButton icon={faPlus} type="submit" disabled={!isValid}>
+                            등록하기
+                        </IconButton>
                     </form>
                 </CardContainer>
             </ContentWrapper>

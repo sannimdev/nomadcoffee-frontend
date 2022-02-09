@@ -31,11 +31,15 @@ export const Button = styled(InitializedButton)`
     & > *:not(:first-child) {
         margin-left: 10px;
     }
+
+    &.disabled {
+        background-color: ${(props) => darken(0.04, props.theme.lightGray)};
+    }
 `;
 
-export const IconButton = ({ icon: faIconModule, label = '', children }) => {
+export const IconButton = ({ icon: faIconModule, label = '', children, disabled }) => {
     return (
-        <Button>
+        <Button disabled={disabled} className={disabled && 'disabled'}>
             <FontAwesomeIcon icon={faIconModule || faAddressCard} />
             <span>{label || children}</span>
         </Button>

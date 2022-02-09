@@ -75,12 +75,13 @@ function CafeMain({ items = [], loading }) {
                     {items &&
                         items.map((item) => {
                             const {
+                                id,
                                 user: { avatarURL, username },
                                 name,
                                 photo,
                             } = item;
                             return (
-                                <li>
+                                <li key={id}>
                                     <Item>
                                         <Author>
                                             <Avatar data-src={avatarURL || defaultAvatar} />

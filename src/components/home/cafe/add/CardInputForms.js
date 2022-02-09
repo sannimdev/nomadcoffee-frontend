@@ -1,5 +1,6 @@
 import { lighten } from 'polished';
 import styled, { css } from 'styled-components';
+import CardError from './CardError';
 import CardInputItem from './CardInputItem';
 
 const SCardInputForms = styled.ul`
@@ -37,30 +38,33 @@ const CardInput = styled.input`
         border-color: ${(props) => props.theme.error};
     }
 `;
-const CardError = styled.p`
-    color: ${(props) => props.theme.error};
-`;
 
-function CardInputForms() {
+function CardInputForms({ register, errors }) {
+    if (!register) return <div>register 객체를 넘겨야 함</div>;
     return (
         <SCardInputForms>
             <CardInputItem>
                 <label>
                     <CardItemName data-is-required>카페 이름</CardItemName>
-                    <CardInput placeholder="카페 이름" />
-                    <CardError>필수 입력 항목입니다.</CardError>
+                    <CardInput
+                        {...register('name', { required: '카페 이름을 입력해주세요' })}
+                        type="text"
+                        placeholder="카페 이름"
+                        className={!!errors?.name?.message && 'error'}
+                    />
+                    <CardError message={errors?.name?.message} />
                 </label>
             </CardInputItem>
             <CardInputItem>
                 <label>
                     <CardItemName>위도</CardItemName>
-                    <CardInput placeholder="지금은 입력하지 않아도 됩니다" />
+                    <CardInput {...register('latitude')} type="text" placeholder="지금은 입력하지 않아도 됩니다" />
                 </label>
             </CardInputItem>
             <CardInputItem>
                 <label>
                     <CardItemName>경도</CardItemName>
-                    <CardInput placeholder="지금은 입력하지 않아도 됩니다" />
+                    <CardInput {...register('longitude')} type="text" placeholder="지금은 입력하지 않아도 됩니다" />
                 </label>
             </CardInputItem>
         </SCardInputForms>

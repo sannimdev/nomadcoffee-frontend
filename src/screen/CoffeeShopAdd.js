@@ -35,7 +35,8 @@ function CoffeeShopAdd() {
         if (!ok) {
             return setError('result', { message: error });
         }
-        return navigate(routes.home);
+        navigate(routes.home);
+        window.location.reload();
     };
     const [createCoffeeShop, { loading, error }] = useMutation(MUTATION_CREATE_COFFEESHOP, { onCompleted });
     const onSubmitValid = (data) => {
@@ -51,6 +52,7 @@ function CoffeeShopAdd() {
                     <h2>카페 등록하기</h2>
                     <form onSubmit={handleSubmit(onSubmitValid)}>
                         <CardInputForms
+                            isMine={true}
                             register={register}
                             errors={errors}
                             clearError={clearError}

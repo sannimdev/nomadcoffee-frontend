@@ -38,9 +38,9 @@ export const Button = styled(InitializedButton)`
     }
 `;
 
-export const IconButton = ({ icon: faIconModule, label = '', children, disabled, color }) => {
+export const IconButton = ({ icon: faIconModule, label = '', children, disabled, color, type }) => {
     return (
-        <Button disabled={disabled} className={disabled && 'disabled'} color={color}>
+        <Button disabled={disabled} className={disabled && 'disabled'} color={color} type={type}>
             <FontAwesomeIcon icon={faIconModule || faAddressCard} />
             <span>{label || children}</span>
         </Button>

@@ -50,7 +50,9 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
+    // localhost 쓰면 cors 안 됨. (chrome 정책)
     uri: 'http://localhost:4000/graphql',
+    credentials: 'include',
 });
 
 export const client = new ApolloClient({

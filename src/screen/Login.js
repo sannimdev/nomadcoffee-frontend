@@ -28,8 +28,8 @@ function Login() {
     const { register, watch, formState, handleSubmit, setError, clearErrors } = useForm({
         mode: 'onChange',
         defaultValues: {
-            username: location?.state?.username || '',
-            password: location?.state?.password || '',
+            username: location?.state?.username || 'nomad',
+            password: location?.state?.password || '1234',
         },
     });
     const { isValid, errors } = formState;

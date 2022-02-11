@@ -1,8 +1,8 @@
 import { gql, useMutation, useQuery, useReactiveVar } from '@apollo/client';
-import { faEraser, faPlus, faTrash, faXRay } from '@fortawesome/free-solid-svg-icons';
+import { faEraser, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 import { gnbListVar } from '../apollo';
 import HelmetTitle from '../components/HelmetTitle';

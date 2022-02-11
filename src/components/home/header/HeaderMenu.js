@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { darkModeVar, LogUserOut, toggleDarkMode } from '../../../apollo';
 import routes from '../../../routes';
-import { Button, IconButton } from '../shared';
+import { IconButton } from '../shared';
 
 const SHeaderMenu = styled.ul`
     margin-left: 10px;

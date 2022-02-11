@@ -51,7 +51,10 @@ const authLink = setContext((_, { headers }) => {
 
 const httpLink = createHttpLink({
     // localhost 쓰면 cors 안 됨. (chrome 정책)
-    uri: 'http://localhost:4000/graphql',
+    uri:
+        process.env.NODE_ENV === 'production'
+            ? 'https://nomadcoffee-2022.herokuapp.com/graphql'
+            : 'http://localhost:4000/graphql',
     credentials: 'include',
 });
 

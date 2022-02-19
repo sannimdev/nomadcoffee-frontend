@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import routes from '../../../../routes';
+import Avatar from '../../../Avatar';
 import ContentWrapper from '../../ContentWrapper';
 import { InitializedButton } from '../../shared';
 
@@ -20,16 +21,6 @@ const Author = styled.div`
     flex-direction: row;
     align-items: center;
     padding: 10px 0;
-`;
-
-const Avatar = styled.div`
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 15px;
-    background: ${(props) => `no-repeat center url('${props['data-src']}')`};
-    background-size: cover;
 `;
 
 const FollowButton = styled(InitializedButton)`
@@ -65,8 +56,6 @@ const Title = styled.p`
     user-select: none;
 `;
 
-const defaultAvatar =
-    'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2062&q=80';
 const defaultCafeImage =
     'https://images.unsplash.com/photo-1532490389938-2856e3f1560a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80';
 function CafeMain({ items = [], loading }) {
@@ -89,13 +78,15 @@ function CafeMain({ items = [], loading }) {
                                     <Link to={routes.shop.getPath(id)}>
                                         <Item>
                                             <Author>
-                                                <Avatar data-src={avatarURL || defaultAvatar} />
+                                                <Avatar src={avatarURL} />
                                                 <span>{username}</span>
                                                 <FollowButton>팔로우</FollowButton>
                                             </Author>
                                             <Thumbnail
                                                 data-desc="썸네일"
-                                                data-src={photo?.url || defaultCafeImage}
+                                                data-src={
+                                                    photo?.thumbnail || photo?.medium || photo?.url || defaultCafeImage
+                                                }
                                             ></Thumbnail>
                                             <Title>{name}</Title>
                                         </Item>

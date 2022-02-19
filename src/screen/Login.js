@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useLocation } from 'react-router-dom';
 import routes from '../routes';
 import AlertBox from '../components/auth/AlertBox';
-import { LogUserIn } from '../apollo';
+import { logUserIn } from '../apollo';
 
 const LOGIN_MUTATION = gql`
     mutation login($username: String!, $password: String!) {
@@ -49,7 +49,7 @@ function Login() {
             login: { ok, error, token },
         } = data;
         if (!ok) return setError('result', { message: error });
-        if (token) LogUserIn(token);
+        if (token) logUserIn(token);
     };
     const [login, { loading, error }] = useMutation(LOGIN_MUTATION, { onCompleted });
 

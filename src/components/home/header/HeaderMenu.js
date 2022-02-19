@@ -4,9 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { darken } from 'polished';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { darkModeVar, LogUserOut, toggleDarkMode } from '../../../apollo';
+import { darkModeVar, logUserOut, toggleDarkMode } from '../../../apollo';
+import useUser from '../../../hooks/useUser';
 import routes from '../../../routes';
-import { Button, IconButton } from '../shared';
+import Avatar from '../../Avatar';
+import { IconButton } from '../shared';
 
 const SHeaderMenu = styled.ul`
     margin-left: 10px;
@@ -50,6 +52,7 @@ const HeaderMenuIcon = styled.button`
 
 function HeaderMenu() {
     const isDarkMode = useReactiveVar(darkModeVar);
+    const { data } = useUser();
     const navigate = useNavigate();
 
     return (
@@ -62,7 +65,11 @@ function HeaderMenu() {
                 </HeaderMenuIcon>
             </li>
             <li>
-                <HeaderMenuIcon onClick={() => LogUserOut(navigate)}>
+                <Avatar src={data?.me?.avatarURL} />
+                {data?.avatarUURL}
+            </li>
+            <li>
+                <HeaderMenuIcon onClick={() => logUserOut(navigate)}>
                     <FontAwesomeIcon icon={faLockOpen} size="lg">
                         <span>로그아웃</span>
                     </FontAwesomeIcon>

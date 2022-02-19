@@ -6,11 +6,11 @@ const KEY_TOKEN = 'token';
 const KEY_DARK_MODE = 'dark_mode';
 
 export const loggedInVar = makeVar(!!localStorage.getItem(KEY_TOKEN));
-export const LogUserIn = (token) => {
+export const logUserIn = (token) => {
     localStorage.setItem(KEY_TOKEN, token);
     loggedInVar(true);
 };
-export const LogUserOut = (navigate) => {
+export const logUserOut = (navigate) => {
     localStorage.removeItem(KEY_TOKEN);
     loggedInVar(false);
     navigate ? navigate('/', { state: null, replace: true }) : window.location.reload();
@@ -38,7 +38,7 @@ export const gnbListVar = makeVar([
 // https://www.apollographql.com/docs/react/networking/authentication/
 const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') || '';
     // return the headers to the context so httpLink can read them
     return {
         headers: {

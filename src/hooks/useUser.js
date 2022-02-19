@@ -20,6 +20,7 @@ function useUser() {
     const hasToken = useReactiveVar(loggedInVar);
     const { data } = useQuery(ME_QUERY, { skip: !hasToken });
     useEffect(() => {
+        console.log(data === null, data?.me === null);
         if (data?.me === null) {
             logUserOut();
         }

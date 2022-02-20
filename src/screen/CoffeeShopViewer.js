@@ -12,11 +12,12 @@ import ContentWrapper from '../components/home/ContentWrapper';
 import Header from '../components/home/header';
 import Container from '../components/home/header/Container';
 import { IconButton } from '../components/home/shared';
+import useUser from '../hooks/useUser';
 import routes from '../routes';
 
-const QUERY_SEE_COFFEESHOP = gql`
-    query ($seeCoffeeShopId: Int!) {
-        seeCoffeeShop(id: $seeCoffeeShopId) {
+export const SEE_COFFEESHOP_QUERY = gql`
+    query SeeCoffeeShop($id: Int!) {
+        seeCoffeeShop(id: $id) {
             name
             longitude
             latitude
@@ -26,8 +27,8 @@ const QUERY_SEE_COFFEESHOP = gql`
 `;
 
 const MUTATION_EDIT_COFFEESHOP = gql`
-    mutation editCoffeeShop($editCoffeeShopId: Int!, $name: String!, $latitude: String, $longitude: String) {
-        editCoffeeShop(id: $editCoffeeShopId, name: $name, latitude: $latitude, longitude: $longitude) {
+    mutation editCoffeeShop($id: Int!, $name: String!, $latitude: String, $longitude: String) {
+        editCoffeeShop(id: $id, name: $name, latitude: $latitude, longitude: $longitude) {
             ok
             error
         }
@@ -54,10 +55,11 @@ const ButtonContainer = styled.ul`
 function CoffeeShopViewer() {
     const themeContext = useContext(ThemeContext);
     const { id } = useParams();
+    // const { data: userData } = useUser();
     const navigate = useNavigate();
     const goHome = () => {
         navigate(routes.home);
-        window.location.reload();
+        // window.location.reload();
     };
 
     const gnbList = useReactiveVar(gnbListVar);
@@ -72,37 +74,89 @@ function CoffeeShopViewer() {
         const elements = ['name', 'latitude', 'longitude'];
         elements.forEach((name) => setValue(name, data?.seeCoffeeShop[name]));
     };
-    const { loading, data } = useQuery(QUERY_SEE_COFFEESHOP, {
-        variables: { seeCoffeeShopId: parseInt(id) },
+    const { loading, data } = useQuery(SEE_COFFEESHOP_QUERY, {
+        variables: { id: parseInt(id) },
         onCompleted: onLoadCompleted,
     });
 
     const clearError = () => clearErrors('result');
     watch();
 
-    const onUpdateMutationCompleted = (data) => {
+    const onUpdateMutation = (cache, result) => {
+        // TODO: 여기 나중에 손좀 볼 것
         const {
-            editCoffeeShop: { ok, error },
-        } = data;
+            data: {
+                editCoffeeShop: { ok, error },
+            },
+        } = result;
         if (!ok) {
             return setError('result', { message: error });
         }
+        const { name, latitude, longitude } = getValues();
+        // const { me: user } = userData;
+        // modify를 하면 수정은 잘 반영되나 다시 수정할 떄 modify is not function 오류 발생
+        // // cache.modify({
+        // //     id: `CoffeeShop:${id}`,
+        // //     fields: {
+        // //         name: () => name,
+        // //         latitude: () => latitude,
+        // //         longitude: () => longitude,
+        // //         user: { ...user },
+        // //     },
+        // // });
+        cache.writeQuery({
+            query: gql`
+                query SeeCoffeeShop($id: Int!) {
+                    seeCoffeeShop(id: $id) {
+                        name
+                        longitude
+                        latitude
+                        isMine
+                    }
+                }
+            `,
+            data: {
+                seeCoffeeShop: {
+                    __typename: 'CoffeeShop',
+                    id,
+                    name,
+                    latitude,
+                    longitude,
+                    isMine: true,
+                },
+            },
+            variables: { id },
+        });
         goHome();
     };
     const [editCoffeeShop, { loading: updateMutationLoading, error }] = useMutation(MUTATION_EDIT_COFFEESHOP, {
-        onCompleted: onUpdateMutationCompleted,
+        update: onUpdateMutation,
+        refetchQueries: [{ query: SEE_COFFEESHOP_QUERY, variables: { id: parseInt(id) } }],
     });
-    const onSubmit = () => {
-        if (!updateMutationLoading)
-            editCoffeeShop({ variables: { Header, editCoffeeShopId: parseInt(id), ...getValues() } });
+    const onSubmit = (event) => {
+        event.preventDefault();
+        if (!updateMutationLoading) editCoffeeShop({ variables: { id: parseInt(id), ...getValues() } });
+    };
+    const onDeleteCoffeeShop = (cache, result) => {
+        const {
+            data: {
+                deleteCoffeeShop: { ok },
+            },
+        } = result;
+        if (!ok) {
+            goHome();
+            return;
+        }
+        cache.evict({ id: `CoffeeShop:${id}` });
+        // 오류 관계없이 밖으로 나가기
+        goHome();
     };
     const [deleteCoffeeShop, { loading: deleteMutationLoading }] = useMutation(MUTATION_DELETE_COFFEESHOP, {
         variables: { id: parseInt(id) },
+        update: onDeleteCoffeeShop,
     });
     const onDelete = () => {
         if (!deleteMutationLoading) deleteCoffeeShop();
-        // 오류 관계없이 밖으로 나가기
-        goHome();
     };
 
     return (

@@ -10,12 +10,14 @@ import ContentWrapper from '../components/home/ContentWrapper';
 import Header from '../components/home/header';
 import Container from '../components/home/header/Container';
 import { IconButton } from '../components/home/shared';
+import useUser from '../hooks/useUser';
 import routes from '../routes';
 
 const MUTATION_CREATE_COFFEESHOP = gql`
     mutation createCoffeeShop($name: String!, $latitude: String, $longitude: String) {
         createCoffeeShop(name: $name, latitude: $latitude, longitude: $longitude) {
             ok
+            id
             error
         }
     }
@@ -23,22 +25,65 @@ const MUTATION_CREATE_COFFEESHOP = gql`
 
 function CoffeeShopAdd() {
     const navigate = useNavigate();
+    const { data: userData } = useUser();
     const gnbList = useReactiveVar(gnbListVar);
-    const { register, handleSubmit, watch, formState, setError, clearErrors } = useForm({ mode: 'onChange' });
+    const { register, handleSubmit, watch, formState, setError, clearErrors, getValues } = useForm({
+        mode: 'onChange',
+    });
     const { isValid, errors } = formState;
     const clearError = () => clearErrors('result');
     watch();
-    const onCompleted = (data) => {
+    const onCompleted = (cache, result) => {
         const {
-            createCoffeeShop: { ok, error },
-        } = data;
+            data: {
+                createCoffeeShop: { ok, id, error },
+            },
+        } = result;
         if (!ok) {
             return setError('result', { message: error });
         }
+        // cache 업데이트
+        const { name, latitude = '', longitude = '' } = getValues();
+        const user = userData?.me;
+        console.log(user);
+        const newCoffeeShop = {
+            __typename: 'CoffeeShop',
+            id,
+            isMine: true,
+            name,
+            latitude,
+            longitude,
+            user: {
+                ...user,
+            },
+        };
+        cache.writeFragment({
+            data: newCoffeeShop,
+            fragment: gql`
+                fragment NewCoffeeShop on CoffeeShop {
+                    id
+                    isMine
+                    name
+                    latitude
+                    longitude
+                    user {
+                        username
+                        avatarURL
+                    }
+                }
+            `,
+        });
+        cache.modify({
+            id: `ROOT_QUERY`,
+            fields: {
+                seeCoffeeShops: (prev) => [newCoffeeShop, ...prev],
+            },
+        });
+        // const { seeCoffeeShops = [] } = cache.readQuery({ query: SEE_COFFEESHOPS_QUERY });
         navigate(routes.home);
-        window.location.reload();
+        // window.location.reload();
     };
-    const [createCoffeeShop, { loading, error }] = useMutation(MUTATION_CREATE_COFFEESHOP, { onCompleted });
+    const [createCoffeeShop, { loading, error }] = useMutation(MUTATION_CREATE_COFFEESHOP, { update: onCompleted });
     const onSubmitValid = (data) => {
         if (!loading) createCoffeeShop({ variables: { ...data, Header } });
     };

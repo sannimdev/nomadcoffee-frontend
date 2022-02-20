@@ -5,7 +5,7 @@ import CafeMain from '../components/home/cafe/main/CafeMain';
 import { gql, useQuery, useReactiveVar } from '@apollo/client';
 import { gnbListVar } from '../apollo';
 
-const QUERY_COFFEESHOP = gql`
+export const SEE_COFFEESHOPS_QUERY = gql`
     query SeeCoffeeShops {
         seeCoffeeShops {
             categories {
@@ -26,7 +26,7 @@ const QUERY_COFFEESHOP = gql`
 
 function Home() {
     const gnbList = useReactiveVar(gnbListVar);
-    const { loading, data } = useQuery(QUERY_COFFEESHOP);
+    const { loading, data } = useQuery(SEE_COFFEESHOPS_QUERY);
 
     const items = loading ? [] : data.seeCoffeeShops;
     return (

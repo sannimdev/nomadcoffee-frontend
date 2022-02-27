@@ -12,8 +12,8 @@ import ContentWrapper from '../components/home/ContentWrapper';
 import Header from '../components/home/header';
 import Container from '../components/home/header/Container';
 import { IconButton } from '../components/home/shared';
-import useUser from '../hooks/useUser';
 import routes from '../routes';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 export const SEE_COFFEESHOP_QUERY = gql`
     query SeeCoffeeShop($id: Int!) {
@@ -159,6 +159,11 @@ function CoffeeShopViewer() {
         if (!deleteMutationLoading) deleteCoffeeShop();
     };
 
+    const existsPosition = data?.seeCoffeeShop?.latitude && data?.seeCoffeeShop?.longitude;
+    const position = {
+        lat: data?.seeCoffeeShop?.latitude,
+        lng: data?.seeCoffeeShop?.longitude,
+    };
     return (
         <Container>
             <HelmetTitle title={`${data?.seeCoffeeShop?.name || '카페'} 관리`} />
@@ -197,6 +202,21 @@ function CoffeeShopViewer() {
                     )}
                 </CardContainer>
             </ContentWrapper>
+            {existsPosition && (
+                <Map
+                    zoomable={false}
+                    center={{ ...position }}
+                    style={{ width: '100%', height: '500px', marginTop: '50px' }}
+                    level={5}
+                >
+                    <MapMarker // 마커를 생성합니다
+                        position={{
+                            // 마커가 표시될 위치입니다
+                            ...position,
+                        }}
+                    />
+                </Map>
+            )}
         </Container>
     );
 }

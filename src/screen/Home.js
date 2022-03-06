@@ -28,7 +28,7 @@ function Home() {
     const gnbList = useReactiveVar(gnbListVar);
     const { loading, data } = useQuery(SEE_COFFEESHOPS_QUERY);
 
-    const items = loading ? [] : data.seeCoffeeShops;
+    const items = loading ? [] : data?.seeCoffeeShops;
     return (
         <Container>
             <HelmetTitle title={'카페'} />

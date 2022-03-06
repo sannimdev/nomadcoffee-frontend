@@ -53,7 +53,7 @@ const httpLink = createHttpLink({
     // localhost 쓰면 cors 안 됨. (chrome 정책)
     uri:
         process.env.NODE_ENV === 'production'
-            ? 'https://nomadcoffee-2022.herokuapp.com/'
+            ? 'https://nomadcoffee-2022.herokuapp.com/graphql'
             : 'http://nomad.sannim.com:4000/graphql',
     credentials: 'include',
 });
